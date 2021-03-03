@@ -3,7 +3,7 @@ services:
   streamlit:
     build: ./docker/streamlit
     container_name: streamlit
-    command: "streamlit run main.py"
+    command: "streamlit run dashboard.py"
     ports:
       - "8501:8501"
     volumes:
@@ -12,8 +12,7 @@ services:
   notebook:
     build: ./docker/notebook
     container_name: notebook
-    command: "jupyter notebook"
     ports:
       - "8888:8888"
     volumes:
-      - "./src/notebook:/usr/src/app"
+      - "./src/notebook:/home/jovyan/work"
