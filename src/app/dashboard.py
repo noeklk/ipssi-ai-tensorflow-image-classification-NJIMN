@@ -2,6 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import preprocessing
 
 #########################################################################################################################
 
@@ -16,8 +17,14 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown(
-    '<h1><i class="fab fa-spotify"></i> Spotify Dashboard</h1>',
+    '<h1><i class="fas fa-school"></i> Student performance in exams</h1>',
     unsafe_allow_html=True
 )
 
 #########################################################################################################################
+
+# TEST
+st.markdown(
+    preprocessing.test_method()
+)
+# TEST
