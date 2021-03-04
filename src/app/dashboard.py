@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import data_prediction
 import seaborn as sns
+plt.rcParams["figure.dpi"] = 140
 
 #########################################################################################################################
 
@@ -87,7 +88,7 @@ data
 
 fig = plt.figure()
 ax = fig.add_axes([0,0,1,0.5])
-ax.bar(data.columns, data.iloc[0])
+ax.bar(data.columns, data.iloc[0], color=["red", "green", "blue"], edgecolor='black')
 
 st.pyplot(fig)
 
