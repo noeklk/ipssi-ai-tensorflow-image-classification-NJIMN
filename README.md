@@ -21,7 +21,7 @@ Projet qui consiste à analyser, prétraiter et visualiser des données
 
 # Team
 
-**Noé ABDEL KALEK**  - *Developer Lead*
+**Noé ABDEL KALEK**  - *Lead Developer*
 
 **Jéremy VANG FOUA**  - *Developer*
 
