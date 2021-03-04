@@ -14,7 +14,7 @@ def notes_prediction(input_data):
     data = get_data()
 
     X = data[["math", "reading", "writing"]]
-    y = data[["gender", "race", "lunch"]]
+    y = data[["gender", "race", "lunch", "parental_edu"]]
 
     # prediction
     model = RandomForestClassifier(random_state=42)
@@ -24,21 +24,26 @@ def notes_prediction(input_data):
 
     new_df = pd.DataFrame(predictions)
 
-    new_df.columns = "Genre", "Race/Ethnecité", "Repas"
+    new_df.columns = "Genre", "Race/Ethnecité", "Repas", "Education parental"
 
     return new_df
 
 
 def character_type_prediction(input_data):
     
-    # preprocesssing the data
+    # preprocessing the data
     data = get_data()
     data.columns = "gender", "race", "parental_edu", "lunch", "test_prep", "math", "reading", "writing"
 
     LE = preprocessing.LabelEncoder()
-    data = data.apply(LE.fit_transform)
+    
+    data.race = LE.fit_transform(data.race)
+    data.gender = LE.fit_transform(data.gender)
+    data.parental_edu = LE.fit_transform(data.parental_edu)
+    data.lunch = LE.fit_transform(data.lunch)
+    data = data.drop(columns=["test_prep"])
 
-    X = data[["gender", "race", "lunch"]]
+    X = data[["gender", "race", "lunch", "parental_edu"]]
     y = data[["math", "reading", "writing"]]
 
     # prediction

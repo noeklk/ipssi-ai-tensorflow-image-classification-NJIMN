@@ -58,6 +58,11 @@ race = st.radio(
 lunch = st.radio(
     "Repas", 
 ('Standard', 'Free/reduced'))
+
+parental_edu = st.radio(
+    "Education parental",
+    ("some high school", "high school", "associate's degree", "bachelor's degree", "master's degree")
+)
     
 
 gender_output = 0 if gender == 'Female' else 1
@@ -76,12 +81,27 @@ elif race == 'Group E':
 
 lunch_output = 0 if lunch == 'Free/reduced' else 1
 
-data = data_prediction.character_type_prediction([gender_output, race_output, lunch_output])
+parental_edu_output = 0
+
+if parental_edu == 'associate\'s degree':
+    parental_edu_output = 0
+elif parental_edu == 'bachelor\'s degree':
+    parental_edu_output = 1
+elif parental_edu == 'high school':
+    parental_edu_output = 2
+elif parental_edu == 'master\'s degree':
+    parental_edu_output = 3
+elif parental_edu == 'some college':
+    parental_edu_output = 4
+elif parental_edu == 'some high school':
+    parental_edu_output = 5
+
+data = data_prediction.character_type_prediction([gender_output, race_output, lunch_output, parental_edu_output])
 data
 
 fig = plt.figure()
 ax = fig.add_axes([0,0,1,0.5])
-ax.bar(data.columns, data.iloc[0], color=["red", "green", "blue"], edgecolor='black')
+ax.bar(data.columns, data.loc[0], color=["red", "green", "blue"], edgecolor='black')
 
 st.pyplot(fig)
 
