@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn import preprocessing
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 
 def get_data():
     data = pd.read_csv('./StudentsPerformance.csv')
@@ -17,7 +17,7 @@ def notes_prediction(input_data):
     y = data[["gender", "race", "lunch"]]
 
     # prediction
-    model = DecisionTreeClassifier()
+    model = RandomForestClassifier(random_state=42)
     model.fit(X, y)
 
     predictions = model.predict([input_data])
@@ -33,17 +33,16 @@ def character_type_prediction(input_data):
     
     # preprocesssing the data
     data = get_data()
+    data.columns = "gender", "race", "parental_edu", "lunch", "test_prep", "math", "reading", "writing"
 
     LE = preprocessing.LabelEncoder()
-
-    data.columns = "gender", "race", "parental_edu", "lunch", "test_prep", "math", "reading",   "writing"
     data = data.apply(LE.fit_transform)
 
     X = data[["gender", "race", "lunch"]]
     y = data[["math", "reading", "writing"]]
 
     # prediction
-    model = DecisionTreeClassifier()
+    model = RandomForestRegressor(random_state=42)
     model.fit(X, y)
 
     predictions = model.predict([input_data])
@@ -52,6 +51,7 @@ def character_type_prediction(input_data):
 
     new_df = pd.concat([new_df[0], new_df[1], new_df[2]], axis=1)
     new_df.columns = "Mathématiques", "Lecture", "Ecriture"
+    new_df = new_df.round(0).astype(int)
 
     return new_df
 

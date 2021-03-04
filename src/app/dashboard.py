@@ -19,7 +19,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown(
-    '<h1><i class="fas fa-school"></i> Student performance in exams</h1>',
+    '<h1><i class="fas fa-school"></i> Performance des étudiants en examen</h1>',
     unsafe_allow_html=True
 )
 
@@ -78,8 +78,6 @@ lunch_output = 0 if lunch == 'Free/reduced' else 1
 
 data = data_prediction.character_type_prediction([gender_output, race_output, lunch_output])
 data
-
-#st.bar_chart(data)
 
 fig = plt.figure()
 ax = fig.add_axes([0,0,1,0.5])
