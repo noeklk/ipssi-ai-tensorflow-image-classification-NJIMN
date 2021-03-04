@@ -30,20 +30,15 @@ st.markdown(
     unsafe_allow_html=True
     )
 
-target = st.radio(
-    "Colonne à cibler", 
-('gender', 'race', 'lunch'))
+math = st.number_input('Math', format="%d", value=0, min_value=0, max_value=100)
 
-math = st.number_input('Math', format="%d", value=0)
+reading = st.number_input('Lecture', format="%d", value=0, min_value=0, max_value=100)
 
-reading = st.number_input('Lecture', format="%d", value=0)
+writing = st.number_input('Ecriture', format="%d", value=0, min_value=0, max_value=100)
 
-writing = st.number_input('Ecriture', format="%d", value=0)
+data = data_prediction.notes_prediction([math, reading, writing])
+data
 
-
-st.text(
-    data_prediction.notes_prediction(target, [math, reading, writing])[0]
-)
 
 #########################################################################################################################
 

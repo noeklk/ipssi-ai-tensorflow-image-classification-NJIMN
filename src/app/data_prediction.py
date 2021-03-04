@@ -9,21 +9,24 @@ def get_data():
 
     return data
 
-def notes_prediction(target, input_data):
+def notes_prediction(input_data):
     
     data = get_data()
 
     X = data[["math", "reading", "writing"]]
-    y = data[target]
+    y = data[["gender", "race", "lunch"]]
 
     # prediction
     model = DecisionTreeClassifier()
     model.fit(X, y)
 
     predictions = model.predict([input_data])
-    predictions
 
-    return predictions
+    new_df = pd.DataFrame(predictions)
+
+    new_df.columns = "Genre", "Race/Ethnecité", "Repas"
+
+    return new_df
 
 
 def character_type_prediction(input_data):
@@ -45,9 +48,9 @@ def character_type_prediction(input_data):
 
     predictions = model.predict([input_data])
 
-    predictions = pd.DataFrame(predictions)
+    new_df = pd.DataFrame(predictions)
 
-    new_df = pd.concat([predictions[0], predictions[1], predictions[2]], axis=1)
+    new_df = pd.concat([new_df[0], new_df[1], new_df[2]], axis=1)
     new_df.columns = "Mathématiques", "Lecture", "Ecriture"
 
     return new_df
