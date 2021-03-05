@@ -1,5 +1,12 @@
 # ipssi-ai-sklearn-project-NJ
-Projet qui consiste à analyser, prétraiter et visualiser des données
+Mini-Projet fait avec Python(Streamlit) qui consiste à analyser, prétraiter et visualiser des données.
+Il permet de découvrir l'ensemble des notions d'intelligence artificielle vu en cours.
+Dans ce projet nous étudierons sur les performances des étudiants durant leurs examens.
+Base de données : [Students Performance](https://www.kaggle.com/spscientist/students-performance-in-exams)
+Cette application permet de visualiser des prédictions suivants différents critères:
+- Prédiction d'un type d'etudiant par notes
+- Prédictions des notes par un type d'étudiant
+
 
 ## Initialisez le docker-compose 
 `docker-compose up`
