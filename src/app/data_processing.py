@@ -1,9 +1,10 @@
 import pandas as pd
+import numpy as np
 from sklearn import preprocessing
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 
 def get_data():
-    data = pd.read_csv('./StudentsPerformance.csv')
+    data = pd.read_csv('StudentsPerformance.csv')
 
     data.columns = "gender","race","parental_edu","lunch","test_prep","math","reading","writing"
 
@@ -27,7 +28,6 @@ def notes_prediction(input_data):
     new_df.columns = "Genre", "Race/Ethnecité", "Repas", "Education parental"
 
     return new_df
-
 
 def character_type_prediction(input_data):
     
