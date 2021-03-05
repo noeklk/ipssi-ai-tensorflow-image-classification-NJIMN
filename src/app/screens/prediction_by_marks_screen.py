@@ -1,9 +1,6 @@
-# apps/prediction_1.py
-
 import streamlit as st
 import matplotlib.pyplot as plt
 from data_processing import notes_prediction
-# import data_prediction
 
 def app():
     st.title('Prédiction à partir des notes')
