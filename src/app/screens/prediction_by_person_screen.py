@@ -1,5 +1,3 @@
-# apps/prediction_1.py
-
 import streamlit as st
 import matplotlib.pyplot as plt
 from data_processing import character_type_prediction
@@ -59,7 +57,6 @@ def app():
 
     data = character_type_prediction([gender_output, race_output, lunch_output, parental_edu_output])
     st.write(data)
-
 
     fig = plt.figure()
     ax = fig.add_axes([0,0,1,0.5])
