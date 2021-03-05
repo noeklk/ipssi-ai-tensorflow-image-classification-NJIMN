@@ -3,7 +3,7 @@ services:
   streamlit:
     build: ./docker/streamlit
     container_name: streamlit
-    command: "streamlit run dashboard.py"
+    command: "streamlit run app.py"
     ports:
       - "8501:8501"
     volumes:
