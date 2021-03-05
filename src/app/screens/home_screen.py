@@ -13,5 +13,7 @@ def app():
     st.markdown("- Prédictions par type d'étudiant")
     
     st.write("Pour découvrir les résultats, vous pouvez naviguer avec le menu situé sur la gauche.")
+    st.markdown("Vous pouvez aussi consulter notre repo [github](https://github.com/noeklk/ipssi-ai-sklearn-project-NJ)")
     st.markdown("## Enjoy!")
+    
 
