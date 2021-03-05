@@ -1,6 +1,6 @@
 import streamlit as st
 from multiapp import MultiApp
-from apps import home, prediction_by_marks, prediction_by_person
+from screens import home, prediction_by_marks_screen, prediction_by_person_screen
 
 st.markdown(
     """<link 
@@ -12,13 +12,12 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 app = MultiApp()
 
 # Add all your application here
 app.add_app("Accueil", home.app)
-app.add_app("Prédiction par notes", prediction_by_marks.app)
-app.add_app("Prédiction par type d'étudiant", prediction_by_person.app)
+app.add_app("Prédiction par notes", prediction_by_marks_screen.app)
+app.add_app("Prédiction par type d'étudiant", prediction_by_person_screen.app)
 
 # The main app
 app.run()

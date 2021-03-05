@@ -2,12 +2,8 @@
 
 import streamlit as st
 import matplotlib.pyplot as plt
-from functions.functions import notes_prediction
+from data_processing import notes_prediction
 # import data_prediction
-
-plt.rcParams["figure.dpi"] = 140
-
-
 
 def app():
     st.title('Prédiction à partir des notes')

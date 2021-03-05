@@ -2,7 +2,7 @@
 
 import streamlit as st
 import matplotlib.pyplot as plt
-from functions.functions import character_type_prediction
+from data_processing import character_type_prediction
 
 plt.rcParams["figure.dpi"] = 140
 
