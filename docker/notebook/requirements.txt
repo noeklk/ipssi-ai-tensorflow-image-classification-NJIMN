@@ -1,6 +1,0 @@
-jupyter
-matplotlib
-pymongo
-pandas
-sklearn
-seaborn

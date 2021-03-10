@@ -1,0 +1,13 @@
+setuptools==41.0.0
+streamlit
+jupyter
+matplotlib
+pymongo
+pandas
+sklearn
+seaborn
+tensorflow
+mlxtend
+xlrd
+openpyxl  
+numpy==1.19.2
