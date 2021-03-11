@@ -1,23 +1,36 @@
 import streamlit as st
-from multiapp import MultiApp
-from screens import home_screen, prediction_by_marks_screen, prediction_by_person_screen
 
-st.markdown(
-    """<link 
-        rel='stylesheet' 
-        href='https://use.fontawesome.com/releases/v5.8.1/css/all.css' 
-        integrity='sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf' 
-        crossorigin='anonymous'
-    >""",
-    unsafe_allow_html=True
-)
+# File Processing Pkgs
+from PIL import Image
 
-app = MultiApp()
+# Load Images
+def load_image(image_file):
+    img = Image.open(image_file)
+    return img
+    
+    
+def main():
+    st.title("My File upload app")
+    
+    menu =["Home", "Dataset" , "DocumentFiles", "About"]
+    choice = st.sidebar.selectbox("Menu", menu)
+    
+    if choice == "Home":
+        st.subheader("Home")
+        image_file = st.file_uploader("Upload Images" , type=["png", "jpg" , "jpeg"])
+        if image_file is not None:
+            # To see details
+            st.write(type(image_file))
+            # Methods & Attributs
+            # st.write(dir(image_file))
+            file_details = {"filename" : image_file.name,
+                            "filetype" : image_file.type,
+                            "filesize" : image_file.size}
+            st.write(file_details)
+            
+            st.image(load_image(image_file),width=250)
+    
 
-# Add all your application here
-app.add_app("Accueil", home_screen.app)
-app.add_app("Prédiction par notes", prediction_by_marks_screen.app)
-app.add_app("Prédiction par type d'étudiant", prediction_by_person_screen.app)
-
-# The main app
-app.run()
+        
+if __name__ == '__main__':
+    main()
