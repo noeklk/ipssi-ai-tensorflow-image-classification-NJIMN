@@ -58,11 +58,15 @@ def format_race(race):
 def main():
     st.title("Mini app")
     
-    menu =["Home", "Dataset" , "DocumentFiles", "About"]
+    menu =["Home", "Enregistrer un chien", "Classification"]
     choice = st.sidebar.selectbox("Menu", menu)
     
     if choice == "Home":
         st.subheader("Home")
+        st.markdown("# Hello!")
+        
+    elif choice == "Enregistrer un chien":
+        st.subheader("Enregistrer un chien")
         image_file = st.file_uploader("Upload Image", type=["png", "jpg" , "jpeg"])
         
         # TEST : on suppose qu'il prevoit que le chien est un chihuahua
@@ -78,6 +82,11 @@ def main():
             
             if st.button('Enregister? '):
                 save_img(image_file, dogs_breed)
+    
+    elif choice == "Classification":
+        st.subheader("Classification")
+
+        
 
 if __name__ == '__main__':
     main()
