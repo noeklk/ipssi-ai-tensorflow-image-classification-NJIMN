@@ -2,8 +2,9 @@ import streamlit as st
 import cv2
 from matplotlib import pyplot as plt
 import numpy as np
+import os
+from helpers import *
 import re
-import os 
 import glob
 
 # File Processing Pkgs
@@ -76,8 +77,10 @@ def main():
 
         if image_file is not None:
             cv_rgb , gray = load_img_bis(image_file)
-            st.image(cv_rgb)
-            st.write(image_file.type)
+            
+            #st.image(cv_rgb)
+            #st.write(image_file.name)
+
             # st.write(dir(image_file))
             
             if st.button('Enregister? '):
