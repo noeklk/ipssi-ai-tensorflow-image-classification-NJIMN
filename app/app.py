@@ -8,6 +8,8 @@ import re
 import glob
 from tensorflow.keras.models import load_model
 
+from sklearn.preprocessing import LabelBinarizer
+
 # File Processing Pkgs
 from PIL import Image
 
@@ -54,6 +56,38 @@ def save_img(uploaded_file, category):
         f.write(uploaded_file.getbuffer())
         st.success("Saved File")
 
+def load_and_preprocess_image(path, x, y):
+        image = cv2.imread(path)
+        image = cv2.resize(image, (x,y))
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        return image
+    
+def split_data_by_env(env, shape_x, shape_y, encoder):
+    BASEPATH = "./data/" + env +"/"
+
+    LABELS = set()
+
+    paths = []
+
+    for d in os.listdir(BASEPATH):
+        LABELS.add(d)
+        paths.append((BASEPATH+d, d))
+
+    X = []
+    y = []
+
+    for path, label in paths:
+        for image_path in os.listdir(path):
+            image = load_and_preprocess_image(path+"/"+image_path, shape_x, shape_y)
+
+            X.append(image)
+            y.append(label)
+
+    X = np.array(X)
+    y = encoder.fit_transform(np.array(y))
+    
+    return X, y, LABELS, paths
+
     
 # !!!!! A ne faire que si le dossier 'data_app' est vide
 # Creer tous les dossiers de race de chien dans la bd 
@@ -74,7 +108,7 @@ def save_img(uploaded_file, category):
 def main():
     st.title("Mini app")
     
-    menu =["Home", "CNN", "VGG16", "Accuracy Scores", "Classification"]
+    menu =["Home", "CNN", "VGG16", "Accuracy Scores", "Predictions Precisions CNN", "Predictions Precisions VGG16"]
     choice = st.sidebar.selectbox("Menu", menu)
     
     if choice == "Home":
@@ -133,37 +167,81 @@ def main():
     elif choice == "Accuracy Scores":
         st.subheader("Accuracy Score Comparison")
 
-        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 150, 150)
-
+        encoder = LabelBinarizer()
+        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 150, 150, encoder)
         st.subheader("CNN")
         model = load_model('./models/dogs_dataset_big_50_batch_2.h5')
         loss, acc = accuracy_score_by_model(model, X_test, y_test)
         st.write(loss)
         st.write(acc)
 
-        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 224, 224)
-
+        encoder = LabelBinarizer()
+        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 224, 224, encoder)
         st.subheader("VGG16")
         model = load_model('./models/VGG16_MODEL.h5')
         loss, acc = accuracy_score_by_model(model, X_test, y_test)
         st.write(loss)
         st.write(acc)
         
+    elif choice == "Predictions Precisions CNN":
+        st.subheader("Predictions Precisions CNN")
 
+        encoder = LabelBinarizer()
+        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 150, 150, encoder)
+        st.subheader("CNN")
+        model = load_model('./models/dogs_dataset_big_50_batch_2.h5')
+        predictions = model.predict(X_test)
+        label_predictions = encoder.inverse_transform(predictions)
 
-    elif choice == "Classification":
-        st.subheader("Classification")
-        races = ["Chihuahua", "Husky", "Labrador"]
-        choix_race = st.selectbox("Races" ,races )
+        rows, cols = 3, 3
+        size = 25
+
+        fig,ax=plt.subplots(rows,cols)
+        fig.set_size_inches(size,size)
+        for i in range(rows):
+            for j in range (cols):
+                index = np.random.randint(0,len(X_test))
+                ax[i,j].imshow(X_test[index])
+                ax[i,j].set_title(f'Predicted: {label_predictions[index]}\n Actually: {encoder.inverse_transform(y_test)[index]}')
+
+        st.pyplot(fig)
+
+    elif choice == "Predictions Precisions VGG16":
+        st.subheader("Predictions Precisions VGG16")
+
+        encoder = LabelBinarizer()
+        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 224, 224, encoder)
+        st.subheader("VGG16")
+        model = load_model('./models/VGG16_MODEL.h5')
+        predictions = model.predict(X_test)
+        label_predictions = encoder.inverse_transform(predictions)
+
+        rows, cols = 3, 3
+        size = 25
+
+        fig,ax=plt.subplots(rows,cols)
+        fig.set_size_inches(size,size)
+        for i in range(rows):
+            for j in range (cols):
+                index = np.random.randint(0,len(X_test))
+                ax[i,j].imshow(X_test[index])
+                ax[i,j].set_title(f'Predicted: {label_predictions[index]}\n Actually: {encoder.inverse_transform(y_test)[index]}')
+
+        st.pyplot(fig)
+
+    # elif choice == "Classification":
+    #     st.subheader("Classification")
+    #     races = ["Chihuahua", "Husky", "Labrador"]
+    #     choix_race = st.selectbox("Races" ,races )
         
-        if choix_race == "Chihuahua":
-            st.write("Ceci est un chihuahua")
+    #     if choix_race == "Chihuahua":
+    #         st.write("Ceci est un chihuahua")
             
-        elif choix_race == "Husky":
-            st.write("Ceci est un husky")
+    #     elif choix_race == "Husky":
+    #         st.write("Ceci est un husky")
             
-        elif choix_race == "Labrador":
-            st.write("Ceci est un labrador")
+    #     elif choix_race == "Labrador":
+    #         st.write("Ceci est un labrador")
             
 
         

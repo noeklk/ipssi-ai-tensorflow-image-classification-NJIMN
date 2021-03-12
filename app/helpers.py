@@ -195,40 +195,6 @@ def predict_breed_from_img(cv_rgb, gray, model):
     fig, ax = plt.subplots(figsize=(25, 10))
     return cv_rgb, fig, msg, predicted_label_out
 
-encoder = LabelBinarizer()
-
-def load_and_preprocess_image(path, x, y):
-        image = cv2.imread(path)
-        image = cv2.resize(image, (x,y))
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        return image
-    
-def split_data_by_env(env, shape_x, shape_y):
-    BASEPATH = "./data/" + env +"/"
-
-    LABELS = set()
-
-    paths = []
-
-    for d in os.listdir(BASEPATH):
-        LABELS.add(d)
-        paths.append((BASEPATH+d, d))
-
-    X = []
-    y = []
-
-    for path, label in paths:
-        for image_path in os.listdir(path):
-            image = load_and_preprocess_image(path+"/"+image_path, shape_x, shape_y)
-
-            X.append(image)
-            y.append(label)
-
-    X = np.array(X)
-    y = encoder.fit_transform(np.array(y))
-    
-    return X, y, LABELS, paths
-
 def accuracy_score_by_model(model, X_test, y_test):
     loss, acc = model.evaluate(X_test, y_test,verbose=0)
     loss_msg = f"loss on the test set is {loss:.2f}"
