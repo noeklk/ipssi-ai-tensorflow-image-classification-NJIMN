@@ -38,7 +38,13 @@ def load_img_bis(uploaded_file):
 def save_img(uploaded_file, category):
     # Path 
     category = str(category)
-    path = "data/app_data/" + category
+    app_data_dir = "data/app_data"
+    try: 
+        os.makedirs(app_data_dir)
+    except OSError:
+        if not os.path.isdir(app_data_dir):
+            raise
+    path = app_data_dir+"/" + category
     # Test : Verifie si le dossier existe sinon il le
     try: 
         os.makedirs(path)
@@ -47,8 +53,6 @@ def save_img(uploaded_file, category):
             raise
     # Normaliser les noms des fihiers
     file_type = "jpg"
-    # modele = n02085620_477.jpg
-    # nom du dossier = n02085620_Chihuahua
     firstname = category
     lastname = len(glob.glob(os.path.join(path, '*'))) + 1
     final_name = firstname+"_"+ str(lastname)
