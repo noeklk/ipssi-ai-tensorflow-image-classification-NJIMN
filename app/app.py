@@ -69,11 +69,28 @@ def main():
         # TEST : on suppose qu'il prevoit que le chien est un chihuahua
         # To do: récupérer de facon dynamique la race du chien
         dogs_breed = "n02085620-Chihuahua"
-    
 
+
+          # img, fig, msg = predict_breed_from_data(5, 'train')
+
+        # st.image(img)
+        # for i in msg:
+        #         st.write(i)
+        # st.pyplot(fig)
+
+      
         if image_file is not None:
             cv_rgb , gray = load_img_bis(image_file)
-            
+            img, fig, msg = predict_breed_from_img(cv_rgb, gray)
+
+            st.image(img, use_column_width=True)
+
+            for i in msg:
+                st.write(i)
+
+            if fig is not None:
+
+                st.pyplot(fig)
             #st.image(cv_rgb)
             #st.write(image_file.name)
 
@@ -84,3 +101,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
