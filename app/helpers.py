@@ -58,7 +58,7 @@ random.seed(42)
 np.random.seed(42)
 tf.random.set_seed(42)
 
-data_dir = '../data'
+data_dir = './data'
 train_dir = os.path.join(data_dir, 'train/')
 valid_dir = os.path.join(data_dir, 'valid/')
 test_dir = os.path.join(data_dir, 'test/')
@@ -203,7 +203,7 @@ def predict_breed_from_img(cv_rgb, gray):
             human_d = 'Human found in this picture'
             msg[3] = human_d
 
-        return cv_rgb, fig, msg
+        return cv_rgb, fig, msg, predicted_label_out
         
     elif face_detector(gray):
         human_d = 'Human found in this picture'
@@ -211,7 +211,7 @@ def predict_breed_from_img(cv_rgb, gray):
         predicted_label_out = 'human_face'
     
     fig, ax = plt.subplots(figsize=(25, 10))
-    return cv_rgb, fig, msg
+    return cv_rgb, fig, msg, predicted_label_out
 
 
 

@@ -3,7 +3,7 @@ import cv2
 from matplotlib import pyplot as plt
 import numpy as np
 import os
-# from helpers import *
+from helpers import *
 import re
 import glob
 
@@ -32,10 +32,10 @@ def load_img_bis(uploaded_file):
     return cv_rgb, gray
     
 # Normaliser le nom de l'image et l'enregistrer dans le bon dossier
-def save_img(uploaded_file, dogs_breed):
+def save_img(uploaded_file, category):
     # Path 
-    dogs_breed = str(dogs_breed)
-    path = "data_app/"+dogs_breed
+    category = str(category)
+    path = "data/app_data/" + category
     # Test : Verifie si le dossier existe sinon il le
     try: 
         os.makedirs(path)
@@ -46,16 +46,13 @@ def save_img(uploaded_file, dogs_breed):
     file_type = "jpg"
     # modele = n02085620_477.jpg
     # nom du dossier = n02085620_Chihuahua
-    firstname = format_race(dogs_breed)
+    firstname = category
     lastname = len(glob.glob(os.path.join(path, '*'))) + 1
     final_name = firstname+"_"+ str(lastname)
     with open(os.path.join(path , final_name +"." +file_type),"wb") as f: 
         f.write(uploaded_file.getbuffer())
         st.success("Saved File")
 
-# Recuperer le numero de la race par une regex
-def format_race(race):
-    return re.search(r'^.*?(?=-)', race).group(0)
     
 # !!!!! A ne faire que si le dossier 'data_app' est vide
 # Creer tous les dossiers de race de chien dans la bd 
@@ -89,7 +86,7 @@ def main():
         
         # TEST : on suppose qu'il prevoit que le chien est un chihuahua
         # To do: récupérer de facon dynamique la race du chien
-        dogs_breed = "n02085620-Chihuahua"
+        category = "none"
 
 
           # img, fig, msg = predict_breed_from_data(5, 'train')
@@ -102,7 +99,9 @@ def main():
       
         if image_file is not None:
             cv_rgb , gray = load_img_bis(image_file)
-            img, fig, msg = predict_breed_from_img(cv_rgb, gray)
+            img, fig, msg, label_out = predict_breed_from_img(cv_rgb, gray)
+
+            category = label_out
 
             st.image(img, use_column_width=True)
 
@@ -118,7 +117,7 @@ def main():
             # st.write(dir(image_file))
             
             if st.button('Enregister? '):
-                save_img(image_file, dogs_breed)
+                save_img(image_file, category)
     
     elif choice == "Classification":
         st.subheader("Classification")
