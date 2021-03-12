@@ -13,9 +13,9 @@ source ./venv/bin/activate (MAC/Linux)
 ## 3 Installez les dépendances du projet
 `pip install -r requirements.txt`
 
-### Infos supplémentaires
+### Infos supplémentaires (Lorsque vous êtes dans l'environnement)
 - `streamlit run app/app.py` Lancer l'application streamlit
-- `bash migrate-database.sh` (Alimente la base de données)
+- `jupyter notebook` Accéder au notebook jupyter
 
 ### Liens
 - [Vers le trello](https://trello.com/b/rgbw9N0k/wwprojet-deep-learning)
