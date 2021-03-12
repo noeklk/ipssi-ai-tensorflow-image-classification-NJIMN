@@ -3,7 +3,7 @@ import cv2
 from matplotlib import pyplot as plt
 import numpy as np
 import os
-from helpers import *
+# from helpers import *
 import re
 import glob
 
@@ -21,7 +21,7 @@ def display_img(img):
     imgplot = plt.xticks([])
     return imgplot
     
-
+#Charger l'image
 def load_img_bis(uploaded_file):
     # Convert the file to an opencv image.
     cv2.ocl.setUseOpenCL(False)
@@ -31,10 +31,11 @@ def load_img_bis(uploaded_file):
     gray = cv2.cvtColor(opencv_image, cv2.COLOR_BGR2GRAY)
     return cv_rgb, gray
     
+# Normaliser le nom de l'image et l'enregistrer dans le bon dossier
 def save_img(uploaded_file, dogs_breed):
     # Path 
     dogs_breed = str(dogs_breed)
-    path = "data/"+dogs_breed
+    path = "data_app/"+dogs_breed
     # Test : Verifie si le dossier existe sinon il le
     try: 
         os.makedirs(path)
@@ -52,10 +53,26 @@ def save_img(uploaded_file, dogs_breed):
         f.write(uploaded_file.getbuffer())
         st.success("Saved File")
 
+# Recuperer le numero de la race par une regex
 def format_race(race):
     return re.search(r'^.*?(?=-)', race).group(0)
     
-    
+# !!!!! A ne faire que si le dossier 'data_app' est vide
+# Creer tous les dossiers de race de chien dans la bd 
+# def create_all_breed():
+#     nb_class = len(glob.glob(os.path.join("../data/test", '*')))
+#     st.write(os.getcwd())
+#     st.write(len(glob.glob(os.path.join("../data/test", '*'))))
+#     for i in os.listdir("../data/test"):
+#         if not i.startswith('.'):
+#             # st.write(i)
+#             if not os.path.isdir("/data_app/"+i):
+#                 os.makedirs("data_app/"+i)
+#             else:
+#                 st.write("data_app/"+i+" dossier deja créé")
+
+
+# Visualisation de l'app
 def main():
     st.title("Mini app")
     
@@ -65,6 +82,8 @@ def main():
     if choice == "Home":
         st.subheader("Home")
         st.markdown("# Hello!")
+
+            
         
     elif choice == "Enregistrer un chien":
         st.subheader("Enregistrer un chien")

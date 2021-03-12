@@ -19,8 +19,8 @@ import re
 import tensorflow as tf
 
 #Si vous n'avez pas de GPU ou que vous ne voulez pas l'utiliser, commentez les 2 lignes suivantes
-physical_devices = tf.config.list_physical_devices('GPU') 
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
+# physical_devices = tf.config.list_physical_devices('GPU') 
+# tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 print(tf.__version__)
 from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
@@ -47,7 +47,7 @@ random.seed(42)
 np.random.seed(42)
 tf.random.set_seed(42)
 
-data_dir = './data'
+data_dir = '../data'
 train_dir = os.path.join(data_dir, 'train/')
 valid_dir = os.path.join(data_dir, 'valid/')
 test_dir = os.path.join(data_dir, 'test/')
