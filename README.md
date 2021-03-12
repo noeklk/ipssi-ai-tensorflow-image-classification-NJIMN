@@ -4,7 +4,7 @@ Mini-Projet fait avec Python(Streamlit) consiste à analyser, prétraiter et vis
 Il permet de découvrir les notions du machine learning avec [TensorFlow](https://www.tensorflow.org/) et celles vu en cours.\
 Dans ce projet nous analyserons des images de chiens et essayer de prédire, grâce au CNN, de quelle race appartient le chien.\
 Nous analyserons les images à l'aide d'un modele réalisé from scratch et d'un modele VGG16 entrainés sur une base de données de race de chiens.\
-(Base de données : [Students Performance](https://www.kaggle.com/spscientist/students-performance-in-exams)).\
+(Base de données : [Students Performance](https://www.kaggle.com/spscientist/students-performance-in-exams))
 
 La mini-app permet aussi d'enregistrer les images et de les classifier en fonction de la race du chien analyser. Elle permet aussi de visualiser
 les différents chiens présents dans chaque race existante dans la base de données.
