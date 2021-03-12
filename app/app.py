@@ -82,9 +82,7 @@ def main():
     if choice == "Home":
         st.subheader("Home")
         st.markdown("# Hello!")
-
-            
-        
+    
     elif choice == "Enregistrer un chien":
         st.subheader("Enregistrer un chien")
         image_file = st.file_uploader("Upload Image", type=["png", "jpg" , "jpeg"])
@@ -92,21 +90,26 @@ def main():
         # TEST : on suppose qu'il prevoit que le chien est un chihuahua
         # To do: récupérer de facon dynamique la race du chien
         dogs_breed = "n02085620-Chihuahua"
-    
 
         if image_file is not None:
             cv_rgb , gray = load_img_bis(image_file)
-            
-            #st.image(cv_rgb)
-            #st.write(image_file.name)
-
-            # st.write(dir(image_file))
-            
             if st.button('Enregister? '):
                 save_img(image_file, dogs_breed)
     
     elif choice == "Classification":
         st.subheader("Classification")
+        races = ["Chihuahua", "Husky", "Labrador"]
+        choix_race = st.selectbox("Races" ,races )
+        
+        if choix_race == "Chihuahua":
+            st.write("Ceci est un chihuahua")
+            
+        elif choix_race == "Husky":
+            st.write("Ceci est un husky")
+            
+        elif choix_race == "Labrador":
+            st.write("Ceci est un labrador")
+            
 
         
 
