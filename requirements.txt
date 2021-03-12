@@ -11,3 +11,5 @@ mlxtend
 xlrd
 openpyxl  
 numpy==1.19.2
+tqdm
+opencv-python
