@@ -6,6 +6,7 @@ import os
 from helpers import *
 import re
 import glob
+from tensorflow.keras.models import load_model
 
 # File Processing Pkgs
 from PIL import Image
@@ -73,33 +74,23 @@ def save_img(uploaded_file, category):
 def main():
     st.title("Mini app")
     
-    menu =["Home", "Enregistrer un chien", "Classification"]
+    menu =["Home", "CNN", "VGG16", "Accuracy Scores", "Classification"]
     choice = st.sidebar.selectbox("Menu", menu)
     
     if choice == "Home":
         st.subheader("Home")
         st.markdown("# Hello!")
     
-    elif choice == "Enregistrer un chien":
-        st.subheader("Enregistrer un chien")
+    elif choice == "CNN":
+        st.subheader("Enregistrer un chien sur le model custom CNN")
         image_file = st.file_uploader("Upload Image", type=["png", "jpg" , "jpeg"])
         
-        # TEST : on suppose qu'il prevoit que le chien est un chihuahua
-        # To do: récupérer de facon dynamique la race du chien
         category = "none"
-
-
-          # img, fig, msg = predict_breed_from_data(5, 'train')
-
-        # st.image(img)
-        # for i in msg:
-        #         st.write(i)
-        # st.pyplot(fig)
-
       
         if image_file is not None:
             cv_rgb , gray = load_img_bis(image_file)
-            img, fig, msg, label_out = predict_breed_from_img(cv_rgb, gray)
+            model = load_model('./models/dogs_dataset_big_50_batch_2.h5')
+            img, fig, msg, label_out = predict_breed_from_img(cv_rgb, gray, model)
 
             category = label_out
 
@@ -108,17 +99,58 @@ def main():
             for i in msg:
                 st.write(i)
 
-            if fig is not None:
+            st.pyplot(fig)
 
-                st.pyplot(fig)
-            #st.image(cv_rgb)
-            #st.write(image_file.name)
-
-            # st.write(dir(image_file))
             
             if st.button('Enregister? '):
                 save_img(image_file, category)
-    
+
+    elif choice == "VGG16":
+        st.subheader("Enregistrer un chien sur le model VGG16")
+        image_file = st.file_uploader("Upload Image", type=["png", "jpg" , "jpeg"])
+
+        category = "none"
+
+      
+        if image_file is not None:
+            cv_rgb , gray = load_img_bis(image_file)
+            model = load_model('./models/VGG16_MODEL.h5')
+            img, fig, msg, label_out = predict_breed_from_img(cv_rgb, gray, model)
+
+            category = label_out
+
+            st.image(img, use_column_width=True)
+
+            for i in msg:
+                st.write(i)
+
+            st.pyplot(fig)
+
+            
+            if st.button('Enregister? '):
+                save_img(image_file, category)
+
+    elif choice == "Accuracy Scores":
+        st.subheader("Accuracy Score Comparison")
+
+        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 150, 150)
+
+        st.subheader("CNN")
+        model = load_model('./models/dogs_dataset_big_50_batch_2.h5')
+        loss, acc = accuracy_score_by_model(model, X_test, y_test)
+        st.write(loss)
+        st.write(acc)
+
+        X_test, y_test, LABELS_test, path_test = split_data_by_env('test', 224, 224)
+
+        st.subheader("VGG16")
+        model = load_model('./models/VGG16_MODEL.h5')
+        loss, acc = accuracy_score_by_model(model, X_test, y_test)
+        st.write(loss)
+        st.write(acc)
+        
+
+
     elif choice == "Classification":
         st.subheader("Classification")
         races = ["Chihuahua", "Husky", "Labrador"]

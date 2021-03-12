@@ -6,8 +6,7 @@ import pandas as pd
 import cv2
 cv2.ocl.setUseOpenCL(False)
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import Normalizer, MinMaxScaler
+from sklearn.preprocessing import LabelEncoder, Normalizer, MinMaxScaler, LabelBinarizer
 
 from mlxtend.plotting import plot_decision_regions
 from matplotlib import pyplot as plt
@@ -82,23 +81,6 @@ def get_race_from_img_path(img_path):
     index = class_names[class_names[1] == race].values[0][0]
     return index, race
 
-def display_image(x):
-    '''
-    function shows images in training set
-    INPUT: integer between 0 and 16468
-    OUTPUT: image
-    '''
-    img_path = all_images_path('train')[x]
-    img = cv2.imread(img_path)
-    index, race = get_race_from_img_path(img_path)
-    cv_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    plt.imshow(cv_rgb)
-    plt.show()
-    
-    return index, race
-
-model = load_model('./models/model_25.h5')
-
 ResNet50_model = ResNet50(weights='imagenet')
 
 def img_to_tensor_trained_images(img, x, y):
@@ -172,7 +154,7 @@ def format_race(race):
 
 
 
-def predict_breed_from_img(cv_rgb, gray):
+def predict_breed_from_img(cv_rgb, gray, model):
     dog_d = 'No dog found in picture'
     human_d = 'No human found in this picture'
     
@@ -213,71 +195,43 @@ def predict_breed_from_img(cv_rgb, gray):
     fig, ax = plt.subplots(figsize=(25, 10))
     return cv_rgb, fig, msg, predicted_label_out
 
+encoder = LabelBinarizer()
 
-
-
-
-
-
-
-
-
-
-
-
-
-def predict_breed_from_data(x, data_type):
-    img_path = all_images_path(data_type)[x]
+def load_and_preprocess_image(path, x, y):
+        image = cv2.imread(path)
+        image = cv2.resize(image, (x,y))
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        return image
     
-    true_race_index, true_race = get_race_from_img_path(img_path) 
+def split_data_by_env(env, shape_x, shape_y):
+    BASEPATH = "./data/" + env +"/"
+
+    LABELS = set()
+
+    paths = []
+
+    for d in os.listdir(BASEPATH):
+        LABELS.add(d)
+        paths.append((BASEPATH+d, d))
+
+    X = []
+    y = []
+
+    for path, label in paths:
+        for image_path in os.listdir(path):
+            image = load_and_preprocess_image(path+"/"+image_path, shape_x, shape_y)
+
+            X.append(image)
+            y.append(label)
+
+    X = np.array(X)
+    y = encoder.fit_transform(np.array(y))
     
-    cv_rgb, gray = load_img(img_path)
-    
-    dog_d = 'No dog found in picture'
-    human_d = 'No human found in this picture'
-    msg = [dog_d, human_d]
-    _ = plt.xlabel("{}\n{}".format(dog_d, human_d), color="black")
-    
-    if dog_detector(cv_rgb):
-        dog_d = 'Dog found in picture'
-        msg[0] = dog_d
-        
-        single_pred = model.predict(img_to_tensor_trained_images(cv_rgb, 150, 150), 
-                                    use_multiprocessing=True)
-        
-        normalized_data = Normalizer().fit_transform(single_pred)                                                
-                                                     
-        single_pred_label = np.argmax(single_pred)
-        
-        predicted_label = format_race(class_names[1][single_pred_label])
-        true_label = format_race(true_race)
+    return X, y, LABELS, paths
 
-        msg.insert(0, predicted_label)
-        msg.insert(1, "{:2.0f}%".format(100*np.max(single_pred), 2))
-        
-        # if predicted_label == true_label:
-        #     color= 'blue'
-        # else:
-        #     color = 'red'
-        
-        # label_plot = plt.xlabel("{} {:2.0f}% ({})\n{}\n{}".format(predicted_label, 100*np.max(single_pred), true_label,  dog_d, human_d) , color=color)
-        msg = [predicted_label,  "{:2.0f}%".format(100*np.max(single_pred), 2) ,  dog_d, human_d]
+def accuracy_score_by_model(model, X_test, y_test):
+    loss, acc = model.evaluate(X_test, y_test,verbose=0)
+    loss_msg = f"loss on the test set is {loss:.2f}"
+    acc_msg = f"accuracy on the test set is {acc:.3f}"
+    return loss_msg, acc_msg
 
-        fig, ax = plt.subplots(figsize=(25, 10))
-        
-        _ = plot_value_array_with_label(normalized_data[0], true_race_index)
-        _ = plt.xticks(range(120), [format_race(i) for i in race_dirs], rotation=90)
-
-        if face_detector(gray):
-            human_d = 'Human found in this picture'
-            msg[3] = human_d
-
-        return cv_rgb, fig, msg
-        
-    elif face_detector(gray):
-        human_d = 'Human found in this picture'
-        msg[1] = human_d
-
-    fig, ax = plt.subplots(figsize=(25, 10))
-    return cv_rgb, fig, msg
-    
