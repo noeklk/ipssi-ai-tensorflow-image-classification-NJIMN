@@ -1,35 +1,35 @@
-# ipssi-ai-sklearn-project-NJ
-Mini-Projet fait avec Python(Streamlit) consiste à analyser, prétraiter et visualiser des données.\
-Il permet de découvrir l'ensemble des notions d'intelligence artificielle vu en cours.\
-Dans ce projet nous étudierons sur les performances des étudiants durant leurs examens (Base de données : [Students Performance](https://www.kaggle.com/spscientist/students-performance-in-exams)).
+# Etapes pour manipuler cette application (Python >= 3.7.6)
 
-Cette application permet de visualiser des prédictions suivants différents critères:
-- Prédiction d'un profil par notes
-- Prédictions des notes par un type d'étudiant
+## 1 Initialisez votre environnement virtuel
+`py -m venv ./venv`
 
-## Initialisez le docker-compose 
-`docker-compose up`
+## 2 Démarrez votre environnement virtuel
+```
+.\venv\Scripts\Activate.ps1 (PowerShell)
+.\venv\Scripts\Activate.bat (Windows)
+source ./venv/bin/activate (MAC/Linux)
+```
 
-*Si une erreur ce produit, n'hésitez pas à ajouter le flag --build*
+## 3 Installez les dépendances du projet
+`pip install -r requirements.txt`
 
-## C'est tout ! Il ne vous reste plus qu'à naviguez sur les ports mis à disposition
+### Infos supplémentaires
+- `streamlit run app/app.py` Lancer l'application streamlit
+- `bash migrate-database.sh` (Alimente la base de données)
 
-|                   | Port  | Description           | 
-|------------------|-------|-----------------------|
-| Jupyter Notebook | 8888  | Copier coller l'url donné dans les logs lors du docker-compose up |
-| Streamlit        | 8501  | Business Intelligence | 
+### Liens
+- [Vers le trello](https://trello.com/b/rgbw9N0k/wwprojet-deep-learning)
+- [Vers le set de données](https://www.kaggle.com/jessicali9530/stanford-dogs-dataset)
 
 ## Credits & Licence
-05/02/2021 - GPL3 Licence (Open Source)
+12/03/2021 - GPL3 Licence (Open Source)
 
-# Team
+**Noé ABDEL KALEK**  - *Front-End & Back-End Developer (Project Manager)*
 
-**Noé ABDEL KALEK**  - *Lead Developer*
+**Jéremie VANG FOUA**  - *Front-End & Back-End Developer Developer*
 
-**Jéremie VANG FOUA**  - *Developer*
+**Brahim KADDAR**  - *Back-End Developer*    
 
-**Nicolas AUBE**  - *Developer*    
+**Mohamed BOUROUCHE** - *Back-End Developer*
 
-**Mohamed BOUROUCHE** - *Developer*
-
-**Brahim KADDAR** - *Developer*
+**Nicolas AUBE** - *Back-End Developer*
