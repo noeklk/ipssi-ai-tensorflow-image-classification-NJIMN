@@ -1,6 +1,7 @@
 import streamlit as st
 from data_processing import *
 import os
+from PIL import Image
 
 def get_directory_content(path,category):
     if category != "Choisir une catégorie":
@@ -18,8 +19,7 @@ def show_content(path, category, options):
     # st.write(list_img)
     
     for i in list_img: 
-        # st.write(i)
-        st.image(str(os.getcwd()) + "/" +path +"/"+ selected + "/"+ i , width = 250)
+        st.image(Image.open(str(os.getcwd()) + "/" +path +"/"+ selected + "/"+ i ), width=250)
     
 
 def app():
