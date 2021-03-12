@@ -19,7 +19,18 @@ import re
 import tensorflow as tf
 
 #Si vous n'avez pas de GPU ou que vous ne voulez pas l'utiliser, commentez les 2 lignes suivantes
-#physical_devices = tf.config.list_physical_devices('GPU') 
+gpus = tf.config.list_physical_devices('GPU') 
+
+if gpus:
+  try:
+    # Currently, memory growth needs to be the same across GPUs
+    for gpu in gpus:
+      tf.config.experimental.set_memory_growth(gpu, True)
+    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+  except RuntimeError as e:
+    # Memory growth must be set before GPUs have been initialized
+    print(e)
 #tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 print(tf.__version__)
@@ -167,6 +178,8 @@ def predict_breed_from_img(cv_rgb, gray):
     
     msg = [dog_d, human_d]
 
+    predicted_label_out = 'none'
+
     if dog_detector(cv_rgb):
         dog_d = 'Dog found in picture'
         msg[0] = dog_d
@@ -183,6 +196,8 @@ def predict_breed_from_img(cv_rgb, gray):
 
         _ = plot_value_array_from_img(single_pred[0])
         _ = plt.xticks(range(120), [format_race(i) for i in race_dirs], rotation=90)
+
+        predicted_label_out = predicted_label
         
         if face_detector(gray):
             human_d = 'Human found in this picture'
@@ -193,6 +208,7 @@ def predict_breed_from_img(cv_rgb, gray):
     elif face_detector(gray):
         human_d = 'Human found in this picture'
         msg[1] = human_d
+        predicted_label_out = 'human_face'
     
     fig, ax = plt.subplots(figsize=(25, 10))
     return cv_rgb, fig, msg
