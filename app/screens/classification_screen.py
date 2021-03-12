@@ -24,15 +24,17 @@ def show_content(path, category, options):
 
 def app():
     st.subheader("Classification")
-    path = "data/app_data"
-    category = os.listdir(path)
-    
-    len_category = len(os.listdir(path))
-    options = ["Choisir une catégorie"]
-    
-    if len_category < 1:
-        st.write("Il n'y a aucune categorie pour le moment.")
-    else:
-        show_content(path, category, options)
+    app_date_dir = "data/app_data"
+        
+    if not os.path.isdir(app_date_dir):
+        st.write("La base de données est actuellement vide.")
+    else :
+        category = os.listdir(app_date_dir)
+        len_category = len(os.listdir(app_date_dir))
+        options = ["Choisir une catégorie"]
+        if len_category < 1:
+            st.write("Il n'y a aucune categorie pour le moment.")
+        else:
+            show_content(app_date_dir, category, options)
         
 
