@@ -58,7 +58,7 @@ random.seed(42)
 np.random.seed(42)
 tf.random.set_seed(42)
 
-data_dir = './data'
+data_dir = '../data'
 train_dir = os.path.join(data_dir, 'train/')
 valid_dir = os.path.join(data_dir, 'valid/')
 test_dir = os.path.join(data_dir, 'test/')
